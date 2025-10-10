@@ -7,6 +7,8 @@ import { User } from './users/user.entity';
 import { Project } from './projects/project.entity';
 import { Ticket } from './tickets/ticket.entity';
 import { Notification } from './notifications/notification.entity';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -17,9 +19,11 @@ import { Notification } from './notifications/notification.entity';
       type: 'sqlite',
       database: process.env.DATABASE_PATH || './database.sqlite',
       entities: [User, Project, Ticket, Notification],
-      synchronize: true, // Auto-create tables (dev only)
+      synchronize: true, // Auto-create tables
       logging: true,
     }),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

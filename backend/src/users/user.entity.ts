@@ -10,11 +10,11 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ nullable: true })
-  otpCode: string;
+  @Column({ nullable: true, type: 'text' })
+  otpCode: string | null;
 
-  @Column({ nullable: true })
-  otpExpiry: Date;
+  @Column({ nullable: true, type: 'datetime' })
+  otpExpiry: Date | null;
 
   @Column({ default: false })
   isActive: boolean;
