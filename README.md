@@ -1,68 +1,95 @@
-# 📝 Ticket Dashboard
+# 🎯 TicketFlow - Project Management Dashboard
 
-## Overview
+A modern, real-time project management dashboard built with **Next.js**, **NestJS**, and **TypeScript**. Inspired by Trello and Jira, TicketFlow provides seamless ticket management with email-based authentication and super-user controls.
 
-This project is a mini project management dashboard, inspired by tools like Trello and Atlassian, designed to manage projects and track tickets efficiently. It features real-time updates , email-based authentication, and a powerful super-user toggle for enhanced control and visibility.
-
-## Key Features
-
-The application is built to fulfill the following core requirements:
-
-**Email-Based Authentication:** Secure, passwordless login using a One-Time Password (OTP) sent to the user's email. Successful login grants access to the ticket dashboard page.
-**Projects & Tickets:** The dashboard lists all projects. Users can create a new project if none exist. Each project can have multiple tickets with descriptions.
-**Real-time Updates:** Ticket movements must instantly reflect for other viewing users.
-**Super-User Controls:** A password-protected toggle allows authorized users to display (ON) who created/updated tickets, or hide (OFF) this user info.
-    **Activity Feed:** All ticket updates are shown instantly in the notifications for active users.
-    **Email Alerts:** Updates are sent via email to team members who visited earlier but are currently offline.
+![TicketFlow Dashboard](https://img.shields.io/badge/Status-In%20Development-yellow)
+![TypeScript](https://img.shields.io/badge/TypeScript-100%25-blue)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
-## 🛠️ Tech Stack & Architecture Decisions
+## ✨ Features
 
-This project uses a modern, full-stack TypeScript approach to ensure scalability and maintainability.
+### 🔐 Authentication
+- **Email-based OTP Login** - Passwordless authentication system
+- JWT token management for secure sessions
+- Mock email service (OTP logged to console for demo)
 
-### Frontend 💻
-**Framework:** NextJS
-**Language:** Typescript
-**Styling:** Tailwind CSS
-**State Management:** Zustand
+### 📊 Project Management
+- **Create & Manage Projects** - Organize work into distinct projects
+- **Project Dashboard** - Overview of all projects with statistics
+- **Project Details** - Deep dive into individual projects
 
-### Backend ⚙️
-**Framework:** NestJS
-**Language:** Typescript
-**Database:** SQLite
+### 🎫 Ticket System
+- **Kanban Board** - Visual workflow with 5 status columns:
+  - 🟣 **Proposed** - New ideas and requests
+  - 🔵 **To Do** - Ready to start
+  - 🟡 **In Progress** - Currently being worked on
+  - 🟢 **Done** - Completed tasks
+  - 🌸 **Deployed** - Live in production
+- **Drag & Drop** - Move tickets between columns seamlessly
+- **Ticket Creation** - Quick ticket creation with status selection
+- **Ticket Details** - Title, description, creator, and timestamps
 
+### 👑 Super User Mode
+- **Password-Protected Toggle** - Secure access control
+- **Creator Information** - View who created and last updated tickets
+- **Audit Trail** - Track changes and modifications
 
----
-
-## 🚀 Getting Started (Work in Progress)
-
-### Prerequisites
-* Node.js (LTS version)
-* *\[Any specific database server/service]*
-
-### Installation
-1.  **Clone the repository:**
-    ```bash
-    git clone [Your-Repo-Link-Here]
-    cd ticket-dashboard
-    ```
-2.  **Setup Backend:** (Located in the `backend/` directory)
-    ```bash
-    cd backend
-    npm install
-    # Instructions for running the NestJS service will go here
-    ```
-3.  **Setup Frontend:** (Located in the `frontend/` directory)
-    ```bash
-    cd ../frontend
-    npm install
-    # Instructions for running the Next.js service will go here
-    ```
+### 🔔 Notifications (Upcoming)
+- Real-time activity feed
+- Email notifications for offline users
+- WebSocket-based instant updates
 
 ---
 
-### Focused Areas:
-**Backend:** Logic, notifications handling, super-admin toggle implementation, and database usage justification.
-**Frontend:** Architecture, state management, and conditional rendering based on the super-user toggle.
-**Code Quality:** Clean, modular, reusable code with proper naming conventions and folder structure.
+## 🏗️ Architecture
+
+### Tech Stack
+
+#### Frontend
+- **Framework**: Next.js 15 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: Zustand
+- **HTTP Client**: Axios
+- **Real-time**: Socket.io Client (ready for integration)
+- **Icons**: Lucide React
+- **Date Handling**: date-fns
+
+#### Backend
+- **Framework**: NestJS
+- **Language**: TypeScript
+- **Database**: SQLite with TypeORM
+- **Authentication**: JWT + Passport
+- **Real-time**: Socket.io (ready for integration)
+- **Validation**: class-validator
+
+### Design Patterns
+
+1. **Repository Pattern** - Clean data access layer with TypeORM
+2. **Strategy Pattern** - Notification delivery system (real-time vs email)
+3. **Factory Pattern** - Ticket and notification creation
+4. **Observer Pattern** - WebSocket event handling
+5. **Middleware Pattern** - Authentication and validation
+
+---
+
+## 🗄️ Database Design
+
+### Why SQLite?
+
+We chose **SQLite** over NoSQL for several key reasons:
+
+#### ✅ Advantages
+- **Relational Structure**: Projects → Tickets → Users have clear relationships
+- **ACID Compliance**: Ensures data integrity during ticket moves
+- **Foreign Keys**: Maintains referential integrity
+- **Complex Queries**: Easy to query "all tickets created by user X"
+- **Zero Configuration**: File-based, perfect for demos and development
+- **Transactions**: Safe concurrent updates
+
+### Getting Started
+- Node.js 18+
+- npm
+- Git
