@@ -17,7 +17,9 @@ export class TicketsService {
       creatorId: userId,
       lastUpdatedById: userId,
     });
-    return this.ticketsRepository.save(ticket);
+    const saved = await this.ticketsRepository.save(ticket);
+    // reload with relations so frontend receives creator / lastUpdatedBy
+    return this.findOne(saved.id);
   }
 
   async findAll(): Promise<Ticket[]> {
@@ -50,20 +52,18 @@ export class TicketsService {
 
   async update(id: string, updateTicketDto: UpdateTicketDto, userId: string): Promise<Ticket> {
     const ticket = await this.findOne(id);
-    
     Object.assign(ticket, updateTicketDto);
     ticket.lastUpdatedById = userId;
-    
-    return this.ticketsRepository.save(ticket);
+    const saved = await this.ticketsRepository.save(ticket);
+    return this.findOne(saved.id);
   }
 
   async move(id: string, moveTicketDto: MoveTicketDto, userId: string): Promise<Ticket> {
     const ticket = await this.findOne(id);
-    
     ticket.status = moveTicketDto.status;
     ticket.lastUpdatedById = userId;
-    
-    return this.ticketsRepository.save(ticket);
+    const saved = await this.ticketsRepository.save(ticket);
+    return this.findOne(saved.id);
   }
 
   async remove(id: string): Promise<void> {
