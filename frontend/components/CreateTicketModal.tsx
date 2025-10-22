@@ -62,7 +62,7 @@ export default function CreateTicketModal({ projectId, onClose }: CreateTicketMo
             <Ticket className="w-6 h-6 text-white" />
           </div>
           <h2 className="text-2xl font-bold text-slate-900">Create New Ticket</h2>
-          <p className="text-slate-600 mt-1">Add a new task to your project</p>
+          <p className="text-slate-700 mt-1">Add a new task to your project</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -81,7 +81,7 @@ export default function CreateTicketModal({ projectId, onClose }: CreateTicketMo
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g., Fix login bug"
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
               required
             />
           </div>
@@ -95,7 +95,7 @@ export default function CreateTicketModal({ projectId, onClose }: CreateTicketMo
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe the task details..."
               rows={3}
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition resize-none"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition resize-none"
             />
           </div>
 
