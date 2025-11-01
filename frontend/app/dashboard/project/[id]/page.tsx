@@ -9,6 +9,7 @@ import Navbar from '@/components/Navbar';
 import KanbanColumn from '@/components/KanbanColumn';
 import CreateTicketModal from '@/components/CreateTicketModal';
 import { ArrowLeft, MoreVertical } from 'lucide-react';
+import { useSocket } from '@/hooks/useSocket';
 
 export default function ProjectDetailPage() {
   const router = useRouter();
@@ -22,6 +23,52 @@ export default function ProjectDetailPage() {
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<TicketStatus>('proposed');
+  const { joinProject, leaveProject, on, off } = useSocket();
+
+useEffect(() => {
+  if (!projectId) return;
+
+  // Join project room
+  joinProject(projectId);
+
+  // Listen for ticket events
+  const handleTicketCreated = (ticket: any) => {
+    console.log('📬 Ticket created:', ticket);
+    setTickets([ticket, ...tickets]);
+  };
+
+  const handleTicketMoved = (data: any) => {
+    console.log('🔄 Ticket moved:', data);
+    setTickets(
+      tickets.map((t) => (t.id === data.id ? { ...t, status: data.status, lastUpdatedBy: data.lastUpdatedBy } : t))
+    );
+  };
+
+  const handleTicketUpdated = (ticket: any) => {
+    console.log('✏️ Ticket updated:', ticket);
+    setTickets(
+      tickets.map((t) => (t.id === ticket.id ? ticket : t))
+    );
+  };
+
+  const handleTicketDeleted = (data: { id: string }) => {
+    console.log('🗑️ Ticket deleted:', data);
+    setTickets(tickets.filter((t) => t.id !== data.id));
+  };
+
+  on('ticket:created', handleTicketCreated);
+  on('ticket:moved', handleTicketMoved);
+  on('ticket:updated', handleTicketUpdated);
+  on('ticket:deleted', handleTicketDeleted);
+
+  return () => {
+    off('ticket:created', handleTicketCreated);
+    off('ticket:moved', handleTicketMoved);
+    off('ticket:updated', handleTicketUpdated);
+    off('ticket:deleted', handleTicketDeleted);
+    leaveProject(projectId);
+  };
+}, [projectId, joinProject, leaveProject, on, off]);
 
   useEffect(() => {
     if (!isAuthenticated()) {
