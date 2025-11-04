@@ -73,7 +73,11 @@ export default function LoginPage() {
         {/* Card */}
         <div className="bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8">
           {step === 'email' ? (
-            <form onSubmit={handleSendOtp} className="space-y-6">
+            <form
+              onSubmit={handleSendOtp} 
+              className="space-y-6"
+              autoComplete="off" 
+            >
               <div>
                 <h2 className="text-2xl font-bold text-white mb-2">Welcome back</h2>
                 <p className="text-slate-300 text-sm">Enter your email to receive a one-time password</p>
@@ -105,6 +109,7 @@ export default function LoginPage() {
                     required
                     placeholder="you@example.com"
                     className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                    autoComplete='off'
                   />
                 </div>
               </div>

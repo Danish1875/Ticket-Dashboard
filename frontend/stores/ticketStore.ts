@@ -34,7 +34,12 @@ interface TicketState {
 export const useTicketStore = create<TicketState>((set) => ({
   tickets: [],
   setTickets: (tickets) => set({ tickets }),
-  addTicket: (ticket) => set((state) => ({ tickets: [ticket, ...state.tickets] })),
+  addTicket: (ticket) => set((state) => {
+    // Check if ticket already exists
+    const exists = state.tickets.some((t) => t.id === ticket.id);
+    if (exists) return state;
+    return { tickets: [ticket, ...state.tickets] };
+  }),
   updateTicket: (id, updatedTicket) =>
     set((state) => ({
       tickets: state.tickets.map((t) => (t.id === id ? { ...t, ...updatedTicket } : t)),

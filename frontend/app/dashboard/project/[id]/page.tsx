@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuthStore } from '@/stores/authStore';
-import { useTicketStore, TicketStatus } from '@/stores/ticketStore';
+import { useTicketStore, TicketStatus, Ticket } from '@/stores/ticketStore';
 import { projectsApi, ticketsApi } from '@/lib/api';
 import Navbar from '@/components/Navbar';
 import KanbanColumn from '@/components/KanbanColumn';
@@ -34,7 +34,10 @@ useEffect(() => {
   // Listen for ticket events
   const handleTicketCreated = (ticket: any) => {
     console.log('📬 Ticket created:', ticket);
-    setTickets([ticket, ...tickets]);
+    // Avoid duplicates
+    const exists = tickets.some((t) => t.id === ticket.id);
+    if (exists) return;
+    setTickets([...tickets, ticket]);
   };
 
   const handleTicketMoved = (data: any) => {
