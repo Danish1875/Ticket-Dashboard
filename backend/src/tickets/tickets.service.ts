@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Ticket } from './ticket.entity';
 import { CreateTicketDto, UpdateTicketDto, MoveTicketDto } from './tickets.dto';
 import { NotificationsGateway } from '../notifications/notifications.gateway';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class TicketsService {
@@ -11,6 +12,7 @@ export class TicketsService {
     @InjectRepository(Ticket)
     private ticketsRepository: Repository<Ticket>,
     private notificationsGateway: NotificationsGateway,
+    private notificationsService: NotificationsService,
   ) {}
 
   async create(
@@ -33,6 +35,19 @@ export class TicketsService {
       'ticket:created',
       fullTicket,
     );
+
+    const activeUsers = this.notificationsGateway.getActiveUsers();
+    const otherUsers = activeUsers.filter((u) => u !== userId);
+
+    if (otherUsers.length > 0) {
+      await this.notificationsService.notifyTicketCreated(
+        fullTicket.id,
+        fullTicket.projectId,
+        fullTicket.creator.email,
+        fullTicket.title,
+        otherUsers,
+      );
+    }
 
     return fullTicket;
   }
@@ -85,6 +100,20 @@ export class TicketsService {
       fullTicket,
     );
 
+    // Create notifications
+    const activeUsers = this.notificationsGateway.getActiveUsers();
+    const otherUsers = activeUsers.filter(u => u !== userId);
+    
+    if (otherUsers.length > 0) {
+      await this.notificationsService.notifyTicketUpdated(
+        fullTicket.id,
+        fullTicket.projectId,
+        fullTicket.lastUpdatedBy.email,
+        fullTicket.title,
+        otherUsers,
+      );
+    }
+
     return fullTicket;
   }
 
@@ -114,13 +143,27 @@ export class TicketsService {
       },
     );
 
+    // Create notifications
+    const activeUsers = this.notificationsGateway.getActiveUsers();
+    const otherUsers = activeUsers.filter(u => u !== userId);
+
+    if (otherUsers.length > 0) {
+      await this.notificationsService.notifyTicketMoved(
+        fullTicket.id,
+        fullTicket.projectId,
+        fullTicket.lastUpdatedBy.email,
+        fullTicket.title,
+        moveTicketDto.status,
+        otherUsers,
+      );
+    }
+
     return fullTicket;
   }
 
   async remove(id: string): Promise<void> {
     const ticket = await this.findOne(id);
-    const projectId = ticket.projectId
-
+    const projectId = ticket.projectId;
 
     const result = await this.ticketsRepository.delete(id);
     if (result.affected === 0) {
@@ -128,10 +171,8 @@ export class TicketsService {
     }
 
     // Emit real-time event
-    this.notificationsGateway.emitToProject(
-      projectId,
-      'ticket:deleted',
-      { id },
-    );
+    this.notificationsGateway.emitToProject(projectId, 'ticket:deleted', {
+      id,
+    });
   }
 }

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { LogOut, Shield, Bell, User } from 'lucide-react';
 import { useState } from 'react';
 import SuperUserModal from './SuperUserModal';
+import NotificationDropdown from './NotificationDropdown';
 
 export default function Navbar() {
   const { user, logout } = useAuthStore();
@@ -59,11 +60,8 @@ export default function Navbar() {
                 <span className="text-sm font-medium">Super User</span>
               </button>
 
-              {/* Notifications */}
-              <button className="relative p-2 hover:bg-slate-100 rounded-xl transition">
-                <Bell className="w-5 h-5 text-slate-600" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-pink-500 rounded-full"></span>
-              </button>
+              {/* Notifications UI*/}
+              <NotificationDropdown />
 
               {/* User Menu */}
               <div className="flex items-center gap-3 pl-4 border-l border-slate-200">

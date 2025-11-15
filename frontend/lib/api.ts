@@ -62,3 +62,12 @@ export const ticketsApi = {
     api.patch(`/tickets/${id}/move`, { status }),
   delete: (id: string) => api.delete(`/tickets/${id}`),
 };
+
+
+// Notifications API Section
+export const notificationsApi = {
+  getAll: () => api.get('/notifications'),
+  getUnreadCount: () => api.get('/notifications/unread-count'),
+  markAsRead: (id: string) => api.patch(`/notifications/${id}/read`),
+  markAllAsRead: () => api.patch('/notifications/mark-all-read'),
+};
