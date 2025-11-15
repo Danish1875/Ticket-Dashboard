@@ -37,6 +37,11 @@ export default function DashboardPage() {
     }
   };
 
+  const getUsername = (email?: string | null) => {
+    if (!email) return 'Unknown';
+    return email.split('@')[0];
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
@@ -161,7 +166,7 @@ export default function DashboardPage() {
                   </div>
                   <div className="flex items-center gap-2 text-xs text-slate-500">
                     <User className="w-4 h-4" />
-                    <span className="truncate max-w-[100px]">{project.creator.email.split('@')[0]}</span>
+                    <span className="truncate max-w-[100px]">{getUsername(project.creator?.email)}</span>
                   </div>
                 </div>
               </div>

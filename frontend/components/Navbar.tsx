@@ -14,6 +14,11 @@ export default function Navbar() {
   const router = useRouter();
   const [showSuperUserModal, setShowSuperUserModal] = useState(false);
 
+  const getUsername = (email?: string | null) => {
+    if (!email) return '';
+    return email.split('@')[0];
+  };
+
   const handleLogout = () => {
     logout();
     router.push('/');
@@ -66,7 +71,9 @@ export default function Navbar() {
               {/* User Menu */}
               <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
                 <div className="text-right">
-                  <p className="text-sm font-medium text-slate-900">{user?.email}</p>
+                  <p className="text-sm font-medium text-slate-900">
+                    {getUsername(user?.email)}
+                  </p>
                   <p className="text-xs text-slate-500">Team Member</p>
                 </div>
                 <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl flex items-center justify-center">

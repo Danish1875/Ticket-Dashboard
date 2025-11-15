@@ -119,6 +119,11 @@ useEffect(() => {
     { title: 'Deployed', status: 'deployed' as TicketStatus, color: 'bg-pink-500' },
   ];
 
+  const getUsername = (email?: string | null) => {
+    if (!email) return 'Unknown';
+    return email.split('@')[0];
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-purple-50 to-pink-50">
@@ -175,7 +180,7 @@ useEffect(() => {
             <div className="flex items-center gap-4 mt-4 pt-4 border-t border-slate-100">
               <div className="text-sm">
                 <span className="text-slate-600">Created by:</span>{' '}
-                <span className="font-medium text-slate-900">{project.creator.email}</span>
+                <span className="font-medium text-slate-900">{getUsername(project.creator?.email)}</span>
               </div>
               <div className="text-sm">
                 <span className="text-slate-600">Total Tickets:</span>{' '}
