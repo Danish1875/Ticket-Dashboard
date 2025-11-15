@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       animation: {
         'blob': 'blob 7s infinite',
+        'ripple': 'ripple 0.8s ease-out',
       },
       keyframes: {
         blob: {
